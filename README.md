@@ -2,11 +2,11 @@
 
 Infrastructure-as-Code demo that provisions an AWS footprint for highly available ClickHouse using Terraform. The repo mirrors how I typically split responsibilities into reusable modules and environment-specific stacks:
 
+- **00-backend** - Sets up a S3 backend remote state with DynamoDB locking.
 - **10-networking** – Regional VPC with three AZs, public/private subnets, NAT gateway, and Kubernetes-aware tags.
 - **20-eks** – Production-ready Amazon EKS cluster with managed node groups sized for steady-state analytics workloads.
 - **30-clickhouse** – Installs the Altinity ClickHouse Operator via Helm and bootstraps a sharded ClickHouseInstallation custom resource.
 
-The goal is to highlight skills that map directly to the Altinity Cloud Service SRE role: Terraform automation, AWS/EKS fluency, Kubernetes add-ons, and a focus on secure, observable data services.
 
 ## Repository layout
 
@@ -17,13 +17,13 @@ terraform/
 │   ├── eks          # thin wrapper over terraform-aws-modules/eks
 │   └── clickhouse   # Helm + CRD automation for Altinity operator
 ├── stacks/
+|   ├── 00-backend
 │   ├── 10-networking
 │   ├── 20-eks
 │   └── 30-clickhouse
 └── examples/        # sample tfvars for each stack
 ```
 
-Each stack can be applied independently, which mirrors how I would promote infrastructure changes through CI/CD (e.g., Atlantis or Spacelift).
 
 ## Prerequisites
 
@@ -98,12 +98,3 @@ Backups and DR can be layered on using ClickHouse object storage replication or 
 - Pass tolerations/affinity via `30-clickhouse` variables to isolate workloads onto storage-optimized nodes.
 - Wire the stacks into Atlantis/Spacelift and trigger automated `plan` checks on pull requests.
 
-## Next steps
-
-To extend the demo I would add:
-
-- CI workflows that run `terraform validate`/`terraform plan` for each stack.
-- Observability add-ons (Prometheus, OpenTelemetry collector) and dashboards for ClickHouse metrics.
-- S3-based backups plus lifecycle policies for data retention.
-
-This repo gives reviewers a concrete, reproducible starting point that demonstrates Terraform proficiency, AWS networking/compute fundamentals, and day-2 operational care for ClickHouse.

@@ -1,9 +1,9 @@
 output "clickhouse_namespace" {
-  value       = module.clickhouse.namespace
   description = "Namespace hosting ClickHouse"
+  value       = module.clickhouse.namespace
 }
 
 output "clickhouse_installation" {
-  value       = module.clickhouse.installation_name
   description = "ClickHouseInstallation resource name"
+  value       = module.clickhouse.installation_name
 }

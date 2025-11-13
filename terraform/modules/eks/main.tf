@@ -13,11 +13,11 @@ provider "aws" {
 
 
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster_name
-  cluster_version = var.cluster_version
-  vpc_id          = var.vpc_id
-  subnet_ids      = var.private_subnet_ids
+  source             = "terraform-aws-modules/eks/aws"
+  name               = var.cluster_name
+  kubernetes_version = var.cluster_version
+  vpc_id             = var.vpc_id
+  subnet_ids         = var.private_subnet_ids
 
 
   enable_irsa = true

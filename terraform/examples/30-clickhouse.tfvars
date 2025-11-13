@@ -1,0 +1,15 @@
+region                  = "us-east-1"
+cluster_name            = "clickhouse-demo"
+namespace               = "clickhouse"
+operator_chart_version  = "0.25.0"
+operator_image_tag      = "0.25.0"
+clickhouse_release_name = "analytics"
+clickhouse_version      = "23.8.11.29"
+shards                  = 2
+replicas                = 2
+disk_size               = "200Gi"
+storage_class           = "gp3"
+cpu_request             = "1000m"
+memory_request          = "4Gi"
+cpu_limit               = "2000m"
+memory_limit            = "8Gi"

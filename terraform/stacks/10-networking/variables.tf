@@ -1,7 +1,35 @@
-variable "region" { type = string }
-variable "name" { type = string }
-variable "cidr" { type = string }
-variable "azs" { type = list(string) }
-variable "public_subnets" { type = list(string) }
-variable "private_subnets" { type = list(string) }
-variable "tags" { type = map(string) default = {} }
+variable "region" {
+  description = "AWS region where the networking stack is deployed"
+  type        = string
+}
+
+variable "name" {
+  description = "Base name applied to VPC resources"
+  type        = string
+}
+
+variable "cidr" {
+  description = "CIDR block for the VPC"
+  type        = string
+}
+
+variable "azs" {
+  description = "List of availability zones used for subnet placement"
+  type        = list(string)
+}
+
+variable "public_subnets" {
+  description = "CIDR blocks for public subnets aligned with azs"
+  type        = list(string)
+}
+
+variable "private_subnets" {
+  description = "CIDR blocks for private subnets aligned with azs"
+  type        = list(string)
+}
+
+variable "tags" {
+  description = "Tags applied to all networking resources"
+  type        = map(string)
+  default     = {}
+}

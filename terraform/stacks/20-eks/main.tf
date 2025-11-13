@@ -9,8 +9,28 @@ terraform {
 provider "aws" { region = var.region }
 
 
-# Pull outputs from networking stack via data sources or pass via tfvars
-# For simplicity here: pass vpc_id and private_subnet_ids via tfvars from previous apply outputs
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    bucket = var.network_state_bucket
+    key    = var.network_state_key
+    region = var.network_state_region
+  }
+}
+
+
+locals {
+  vpc_id = coalesce(
+    var.vpc_id,
+    data.terraform_remote_state.network.outputs.vpc_id
+  )
+
+  private_subnet_ids = (
+    var.private_subnet_ids != null && length(var.private_subnet_ids) > 0
+    ? var.private_subnet_ids
+    : data.terraform_remote_state.network.outputs.private_subnets
+  )
+}
 
 
 module "eks" {
@@ -18,8 +38,8 @@ module "eks" {
   region             = var.region
   cluster_name       = var.cluster_name
   cluster_version    = var.cluster_version
-  vpc_id             = var.vpc_id
-  private_subnet_ids = var.private_subnet_ids
+  vpc_id             = local.vpc_id
+  private_subnet_ids = local.private_subnet_ids
 
 
   node_desired        = var.node_desired

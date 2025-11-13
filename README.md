@@ -50,7 +50,7 @@ Each stack can be applied independently, which mirrors how I would promote infra
    terraform apply -var-file ../../examples/10-networking.tfvars
    ```
 
-2. **EKS** – points at the VPC created above (update the `tfvars` with the actual IDs from step 1).
+2. **EKS** – automatically consumes the networking outputs via remote state (override the `network_state_*` variables if your bucket/key differ).
 
    ```bash
    cd ../20-eks
